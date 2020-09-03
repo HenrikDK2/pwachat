@@ -27,4 +27,7 @@ io.on("connection", (socket) => {
       userId: msg.userId,
     });
   });
+  socket.on("disconnect", () => {
+    socket.removeAllListeners();
+  });
 });

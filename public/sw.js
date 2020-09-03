@@ -1,5 +1,6 @@
 const CURRENT_CACHE = "shell-content1";
 const cacheFiles = ["/"];
+const regex = /socket.io/g;
 
 self.addEventListener("activate", (evt) =>
   evt.waitUntil(
@@ -42,10 +43,15 @@ const fromCache = (request) =>
     .then((cache) => cache.match(request).then((matching) => matching || cache.match("/offline/")));
 
 // cache the current page to make it available for offline
-const update = (request) =>
+const update = (request) => {
+  if (regex.test(request.url)) {
+    console.log(request);
+    return;
+  }
   caches
     .open(CURRENT_CACHE)
     .then((cache) => fetch(request).then((response) => cache.put(request, response)));
+};
 
 // general strategy when making a request (eg if online try to fetch it
 // from the network with a timeout, if something fails serve from cache)

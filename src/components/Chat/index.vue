@@ -28,11 +28,7 @@ export default {
   },
   async setup() {
     let socket = await ref(
-      await io().connect({
-        reconnection: false,
-        autoConnect: false,
-        transports: ["websocket"],
-      })
+      await io().connect(window.location.origin, { transports: ["websocket"] })
     );
     let messages = ref(null);
     let socketLoaded = ref(false);

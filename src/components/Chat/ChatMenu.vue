@@ -67,7 +67,7 @@ section {
 form {
   height: 100%;
   padding: 10px 2rem 0;
-  & > input {
+  & input {
     width: 100%;
     height: 40px;
     padding: 0 2rem;

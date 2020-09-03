@@ -30,7 +30,7 @@ export default {
 <style lang="scss" scoped>
 form {
   position: relative;
-  & > textarea {
+  & textarea {
     padding: 1rem;
     width: 100%;
     resize: none;
