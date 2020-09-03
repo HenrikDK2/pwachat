@@ -4,7 +4,7 @@ module.exports = {
   filenameHashing: false,
   configureWebpack: {
     optimization: {
-      minimize: process.env.WEBPACK_MODE == "production" ? true : false,
+      minimize: true,
       minimizer: [
         new TerserPlugin({
           terserOptions: {

@@ -7,7 +7,9 @@
       </li>
     </ul>
     <form>
-      <input id="idInput" @keydown="pmChat" placeholder="ID" />
+      <label aria-label="Id Input" for="id">
+        <input name="id" id="idInput" @keydown="pmChat" placeholder="ID" />
+      </label>
     </form>
     <h6>{{ "#" + userId }}</h6>
   </section>

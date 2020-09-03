@@ -51,6 +51,7 @@ export default {
         },
       });
     }
+
     socket.value.once("foo", async (id) => {
       if (!socketLoaded.value) {
         if (!localStorage.getItem("userId")) {

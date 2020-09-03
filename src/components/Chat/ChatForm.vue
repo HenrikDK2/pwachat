@@ -1,6 +1,13 @@
 <template>
   <form>
-    <textarea placeholder="Skriv din besked" id="chatInput" @keydown="sendMessage" />
+    <Label for="besked">
+      <textarea
+        name="besked"
+        placeholder="Skriv din besked"
+        id="chatInput"
+        @keydown="sendMessage"
+      />
+    </Label>
     <SendButton @click="sendMessage" />
   </form>
 </template>

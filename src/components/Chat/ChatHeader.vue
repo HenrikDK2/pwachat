@@ -3,7 +3,7 @@
     <Profile />
     <h5>General Chat</h5>
     <button>
-      <Img :src="revert" />
+      <Img :src="revert" @click="returnToMenu" />
     </button>
   </article>
 </template>
@@ -17,6 +17,7 @@ export default {
     Profile,
     Img,
   },
+  props: ["returnToMenu"],
   setup() {
     return {
       revert: require("../../assets/arrow-undo-outline.svg"),
