@@ -17,7 +17,6 @@ http.listen(PORT, () => {
 });
 
 io.on("connection", (socket) => {
-  io.emit("foo", socket.id);
   console.log("someone connected");
   socket.on("message", (msg) => {
     io.emit("message", {

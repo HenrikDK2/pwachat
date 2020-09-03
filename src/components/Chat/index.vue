@@ -48,7 +48,7 @@ export default {
       });
     }
 
-    socket.value.once("foo", async (id) => {
+    socket.value.on("connect", async function() {
       if (!socketLoaded.value) {
         if (!localStorage.getItem("userId")) {
           localStorage.setItem("userId", uniqid());
@@ -57,6 +57,13 @@ export default {
         messages.value = await ChatDB.getAll("ChatLog");
         socketLoaded.value = true;
       }
+
+      socket.value.on("message", async (msg) => {
+        const ChatDB = await openDB("Chat", 1);
+        await ChatDB.add("ChatLog", msg);
+        messages.value = await ChatDB.getAll("ChatLog");
+        ChatDB.close();
+      });
     });
 
     socket.value.once("connect_error", async function() {
@@ -64,15 +71,6 @@ export default {
       const ChatDB = await openDB("Chat", 1);
       messages.value = await ChatDB.getAll("ChatLog");
       socketLoaded.value = true;
-      console.log(socket);
-    });
-
-    socket.value.on("message", async (msg) => {
-      const ChatDB = await openDB("Chat", 1);
-      await ChatDB.add("ChatLog", msg);
-      messages.value = await ChatDB.getAll("ChatLog");
-      ChatDB.close();
-      console.log(messages.value);
     });
 
     function connectRoom(e) {

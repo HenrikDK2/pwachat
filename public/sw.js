@@ -44,10 +44,7 @@ const fromCache = (request) =>
 
 // cache the current page to make it available for offline
 const update = (request) => {
-  if (regex.test(request.url)) {
-    console.log(request);
-    return;
-  }
+  if (regex.test(request.url)) return;
   caches
     .open(CURRENT_CACHE)
     .then((cache) => fetch(request).then((response) => cache.put(request, response)));
