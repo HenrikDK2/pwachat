@@ -1,5 +1,5 @@
 const express = require("express");
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 const expressStaticGzip = require("express-static-gzip");
 const app = express();
 const http = require("http").Server(app);
