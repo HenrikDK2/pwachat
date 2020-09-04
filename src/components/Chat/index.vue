@@ -79,9 +79,7 @@ export default {
       });
 
       socket.value.on("message", async msg => {
-        const ChatDB = await openDB("Chat", 1);
-        await ChatDB.add("ChatLog", msg, msg.created);
-        messages.value = await ChatDB.getAll("ChatLog");
+        addMessagesToIdb(msg);
         ChatDB.close();
       });
     });
@@ -107,15 +105,25 @@ export default {
       }
     }
 
+    async function addMessagesToIdb(msg) {
+      const ChatDB = await openDB("Chat", 1);
+      await ChatDB.add("ChatLog", msg, msg.created);
+      messages.value = await ChatDB.getAll("ChatLog");
+    }
+
     function sendMessage(e) {
       if ((e.type === "keydown" && e.keyCode === 13) || e.type !== "keydown") {
         const chatInput = document.querySelector("#chatInput");
         if (chatInput.value.length > 0) {
           e.preventDefault();
-          socket.value.emit("message", {
+          let msg = {
             content: chatInput.value,
+            created: new Date(),
+            id: uniqid(),
             userId: localStorage.getItem("userId")
-          });
+          };
+          addMessagesToIdb(msg);
+          socket.value.emit("message", msg);
           chatInput.value = "";
         }
       }

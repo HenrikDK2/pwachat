@@ -19,15 +19,8 @@ http.listen(PORT, () => {
 io.on("connection", (socket) => {
   console.log("someone connected");
   socket.on("message", (msg) => {
-    let msgObj = {
-      content: msg.content,
-      created: new Date(),
-      id: uniqid(),
-      userId: msg.userId,
-    };
-    io.emit("message", msgObj);
-
-    io.sockets.emit("promptMsg", msgObj);
+    socket.broadcast.emit("message", msg);
+    socket.broadcast.emit("promptMsg", msg);
   });
   socket.on("disconnect", () => {
     socket.removeAllListeners();
