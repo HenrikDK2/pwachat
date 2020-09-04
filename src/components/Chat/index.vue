@@ -36,8 +36,7 @@ export default {
     let flickityOptions = {
       prevNextButtons: false,
       setGallerySize: false,
-      pageDots: false,
-      draggable: true
+      pageDots: false
     };
 
     Notification.requestPermission(function(status) {
