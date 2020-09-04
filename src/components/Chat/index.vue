@@ -39,12 +39,10 @@ export default {
       pageDots: false
     };
 
-    Notification.requestPermission(function(status) {
-      console.log("Notification permission status:", status);
-    });
+    Notification.requestPermission();
 
     if ("indexedDB" in window) {
-      openDB("Chat", 1, {
+      await openDB("Chat", 1, {
         upgrade(db) {
           db.createObjectStore("ChatLog");
         }
@@ -80,7 +78,6 @@ export default {
 
       socket.value.on("message", async msg => {
         addMessagesToIdb(msg);
-        ChatDB.close();
       });
     });
 
@@ -107,8 +104,9 @@ export default {
 
     async function addMessagesToIdb(msg) {
       const ChatDB = await openDB("Chat", 1);
-      await ChatDB.add("ChatLog", msg, msg.created);
+      await ChatDB.add("ChatLog", msg, +new Date());
       messages.value = await ChatDB.getAll("ChatLog");
+      ChatDB.close();
     }
 
     function sendMessage(e) {
