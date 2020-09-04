@@ -24,7 +24,7 @@ export default {
   components: {
     PrivateChat,
     Flickity,
-    ChatMenu,
+    ChatMenu
   },
   async setup() {
     let socket = await ref(
@@ -37,14 +37,18 @@ export default {
       prevNextButtons: false,
       setGallerySize: false,
       pageDots: false,
-      draggable: true,
+      draggable: true
     };
+
+    Notification.requestPermission(function(status) {
+      console.log("Notification permission status:", status);
+    });
 
     if ("indexedDB" in window) {
       openDB("Chat", 1, {
         upgrade(db) {
-          db.createObjectStore("ChatLog", { keyPath: "created" });
-        },
+          db.createObjectStore("ChatLog");
+        }
       });
     }
 
@@ -58,9 +62,26 @@ export default {
         socketLoaded.value = true;
       }
 
-      socket.value.on("message", async (msg) => {
+      socket.value.on("promptMsg", async msg => {
+        if (Notification.permission == "granted") {
+          navigator.serviceWorker.getRegistration().then(function(reg) {
+            const options = {
+              body: msg.content,
+              icon: "img/icons/android-chrome-192x192.png",
+              vibrate: [100, 50, 100],
+              data: {
+                dateOfArrival: Date.now(),
+                primaryKey: 1
+              }
+            };
+            reg.showNotification("UserId: " + msg.userId, options);
+          });
+        }
+      });
+
+      socket.value.on("message", async msg => {
         const ChatDB = await openDB("Chat", 1);
-        await ChatDB.add("ChatLog", msg);
+        await ChatDB.add("ChatLog", msg, msg.created);
         messages.value = await ChatDB.getAll("ChatLog");
         ChatDB.close();
       });
@@ -94,7 +115,7 @@ export default {
           e.preventDefault();
           socket.value.emit("message", {
             content: chatInput.value,
-            userId: localStorage.getItem("userId"),
+            userId: localStorage.getItem("userId")
           });
           chatInput.value = "";
         }
@@ -113,9 +134,9 @@ export default {
       messages,
       connectRoom,
       pmChat,
-      flickityRef,
+      flickityRef
     };
-  },
+  }
 };
 </script>
 
