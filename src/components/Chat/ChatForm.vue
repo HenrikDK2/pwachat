@@ -1,12 +1,7 @@
 <template>
   <form>
     <Label for="besked">
-      <textarea
-        name="besked"
-        placeholder="Skriv din besked"
-        id="chatInput"
-        @keydown="sendMessage"
-      />
+      <textarea name="besked" placeholder="Skriv din besked" id="chatInput" @keydown="sendMessage" />
     </Label>
     <SendButton @click="sendMessage" />
   </form>
@@ -17,13 +12,13 @@ import SendButton from "./SendButton";
 export default {
   name: "ChatForm",
   components: {
-    SendButton,
+    SendButton
   },
   props: {
     sendMessage: {
-      required: true,
-    },
-  },
+      required: true
+    }
+  }
 };
 </script>
 
@@ -31,7 +26,7 @@ export default {
 form {
   position: relative;
   & textarea {
-    padding: 1rem;
+    padding: 1rem 4rem 1rem 1rem;
     width: 100%;
     resize: none;
     font-size: 1rem;

@@ -15,14 +15,14 @@ export default {
   name: "ChatHeader",
   components: {
     Profile,
-    Img,
+    Img
   },
   props: ["returnToMenu"],
   setup() {
     return {
-      revert: require("../../assets/arrow-undo-outline.svg"),
+      revert: require("../../assets/arrow-undo-outline.svg")
     };
-  },
+  }
 };
 </script>
 
@@ -34,6 +34,10 @@ section {
     margin: 0 0 0 auto;
     cursor: pointer;
     padding: 0;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
   }
 
   .chatHeader {

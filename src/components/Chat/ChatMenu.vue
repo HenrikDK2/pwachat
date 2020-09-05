@@ -6,12 +6,13 @@
         <h5>General Chat</h5>
       </li>
     </ul>
-    <form>
-      <label aria-label="Id Input" for="id">
-        <input name="id" id="idInput" @keydown="pmChat" placeholder="ID" />
-      </label>
-    </form>
-    <h6>{{ "#" + userId }}</h6>
+
+    <aside>
+      <h6>Dit ID:{{ "#" + userId }}</h6>
+      <h5
+        :class="socket.connected ? 'online' : 'offline'"
+      >{{socket.connected ? 'Online' : 'Offline'}}</h5>
+    </aside>
   </section>
 </template>
 
@@ -23,26 +24,26 @@ export default {
   name: "ChatMenu",
   components: {
     Img,
-    Profile,
+    Profile
   },
   props: {
     connectRoom: {
-      required: true,
+      required: true
     },
     pmChat: {
-      required: true,
+      required: true
     },
     socket: {
-      required: true,
-    },
+      required: true
+    }
   },
   setup() {
     let userId = localStorage.getItem("userId");
     return {
       userId,
-      profileSrc: require("../../assets/profile-placeholder.jpg"),
+      profileSrc: require("../../assets/profile-placeholder.jpg")
     };
-  },
+  }
 };
 </script>
 
@@ -64,21 +65,31 @@ section {
   grid-template-rows: 1fr 60px;
 }
 
-form {
-  height: 100%;
-  padding: 10px 2rem 0;
-  & input {
-    width: 100%;
-    height: 40px;
-    padding: 0 2rem;
-    box-sizing: border-box;
+aside {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  h5 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  h6 {
+    margin: 0;
+  }
+  .offline {
+    color: red;
+  }
+
+  .online {
+    color: green;
   }
 }
 
 ul {
   list-style: none;
   margin: 0;
-  overflow-y: scroll;
   padding: 0 1rem;
   & > li {
     background: #fff;

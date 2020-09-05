@@ -3,7 +3,8 @@
     <ChatHeader :returnToMenu="returnToMenu" />
     <article :class="messages.length < 1 && 'noMessages'" id="chat">
       <h4 v-if="joke && messages.length < 1">
-        {{ joke.joke }}<span v-if="socket.offline">Du er offline</span>
+        {{ joke.joke }}
+        <span v-if="socket && !socket.connected">Du er offline</span>
       </h4>
       <p :class="userId === msg.userId && 'ownMessage'" v-for="msg in messages" :key="msg.id">
         {{ msg.content }}
@@ -23,21 +24,21 @@ export default {
   name: "PrivateChat",
   components: {
     ChatForm,
-    ChatHeader,
+    ChatHeader
   },
   props: {
     messages: {
-      required: true,
+      required: true
     },
     socket: {
-      required: true,
+      required: true
     },
     returnToMenu: {
-      required: true,
+      required: true
     },
     sendMessage: {
-      required: true,
-    },
+      required: true
+    }
   },
   setup() {
     let joke = ref(null);
@@ -54,14 +55,14 @@ export default {
     });
 
     return { joke, userId };
-  },
+  }
 };
 
 const fetchData = async () => {
   try {
     const jsonData = await fetch("https://icanhazdadjoke.com/", {
-      headers: { Accept: "application/json" },
-    }).then((res) => {
+      headers: { Accept: "application/json" }
+    }).then(res => {
       return res.json();
     });
     return jsonData;
@@ -117,6 +118,9 @@ section {
         white-space: pre;
         color: #c8c8c8;
       }
+    }
+    & p:last-child {
+      margin: 1rem 0 2rem auto;
     }
 
     .ownMessage {
